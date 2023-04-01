@@ -11,7 +11,6 @@ Esse repositório contém alguns projetos Spring para fins de exemplo.
 
 ## Executando os projetos
 
- * Jetty:
 ```sh
 mvn spring-boot:run
 ```
