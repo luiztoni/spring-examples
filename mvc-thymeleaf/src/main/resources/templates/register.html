@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+    integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Register</title>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h3 align="justify">Registration</h3>
+    <div class="card" style="width: 55rem; ">
+      <div class="card-header text-center bg-info ">
+        <h3>Register</h3>
+      </div>
+      <div class="card-body">
+        <form th:action="@{/register}" method="post" th:object="${user}" class="was-validated">
+          <div class="form-group">
+            <label for="exampleInputEmail1">First Name</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              th:field="*{firstName}">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Last Name</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              th:field="*{lastName}">
+          </div>
+          <div id="invalidCpf" style="display: none;">
+            <p class="text-warning">CPF inválido</p>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">CPF</label>
+            <input type="text" class="form-control" id="cpf"
+              th:field="*{cpf}" onblur="validateCpf()" maxlength="15" onkeydown="javascript: loadMask( this, cpfMask );" required>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              th:field="*{email}">
+            <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" onblur="validatePassword()">
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Password</label>
+            <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}" onblur="validatePassword()">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Mobile Number</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{phone}" maxlength="15" onkeydown="javascript: loadMask( this, phoneMask );">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Course</label>
+            <select class="form-control" id="exampleFormControlSelect1" th:field="*{course}">
+              <option th:each="course : ${courses}" th:value="${course}" th:text="${course}" />
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="example">Date of Birth</label>
+            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker">
+              <input placeholder="Select date" type="date" id="example" class="form-control" th:field="*{birth}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Gender</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male"
+                th:field="*{gender}">
+              <label class="form-check-label" for="inlineRadio1">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="Female"
+                th:field="*{gender}">
+              <label class="form-check-label" for="inlineRadio2">Female</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="Other"
+                th:field="*{gender}">
+              <label class="form-check-label" for="inlineRadio2">Other</label>
+            </div>
+
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="myCheck" name="remember" required>
+            <label class="form-check-label" for="myCheck">I agree on blabla.</label>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Check this checkbox to continue.</div>
+          </div>
+
+          <div class="form-group">
+
+          </div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="register">Register</button>
+      </form>
+
+    </div>
+  </div>
+  </div>
+
+  <script type="text/javascript">
+    //Data Picker Initialization
+    $('.datepicker').datepicker();
+  </script>
+</body>
+<script src="/js/form.js"></script>
+<script src="/js/mask.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+</html>
